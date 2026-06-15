@@ -35,3 +35,7 @@ dependencies = [
 [tool.uv]
 # Always use uv-managed Python 3.12 — avoids llvmlite source builds on 3.11/3.14.
 python-preference = "managed"
+
+# geomad has no macOS wheels — uv must compile from source (Cython).
+# Ensure Cython/numpy are available in the isolated build env.
+extra-build-dependencies = { geomad = ["cython>=3.0", "numpy>=2", "setuptools>=74", "setuptools-scm>=8"] }

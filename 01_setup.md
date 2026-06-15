@@ -81,9 +81,17 @@ On the [repository page](https://github.com/timgrandjean93/NCK-TidalFlat), click
 
 All notebooks and dependencies live in the **repository root**.
 
-**Use Python 3.12 or 3.13 only.** The stack pins `llvmlite` to a version with
-pre-built wheels for those releases. Python 3.11 or 3.14 often triggers a
-**source build of llvmlite** (needs LLVM/cmake) and fails with a cryptic compile error.
+**Use Python 3.12 or 3.13 only.** Several packages (`llvmlite`, and on macOS also
+`geomad`) need matching pre-built wheels or a one-time compile from source.
+
+**Recommended (handles macOS compiler quirks automatically):**
+
+```bash
+chmod +x scripts/sync-env.sh   # once
+./scripts/sync-env.sh
+```
+
+Or manually:
 
 ```bash
 uv python install 3.12
@@ -94,13 +102,39 @@ What this does:
 
 1. installs **Python 3.12** via uv if needed (ignores Anaconda/system 3.11);
 2. creates `.venv/` in the project folder;
-3. installs every package at the exact version in `uv.lock` — including a **binary**
-   `llvmlite` wheel, not a source compile.
+3. installs every package at the exact version in `uv.lock`.
 
 :::{warning} Do not use plain `pip install`
-Install with **`uv sync --frozen`** from the repo root. Mixing conda/pip or installing
-without the lock file often pulls a `llvmlite` version that must be compiled from source.
+Install with **`uv sync --frozen`** (or `./scripts/sync-env.sh`) from the repo root.
+Mixing conda/pip or installing without the lock file often triggers failed source builds.
 :::
+
+### If `geomad==1.0.0` fails to build (macOS)
+
+`geomad` is a **Cython extension** pulled in by DEA/odc-algo. PyPI ships wheels for
+**Linux and Windows only** — on **macOS it must compile locally** (~20 s with the
+right compiler).
+
+Typical error: `_Float16 is not supported on this target` or `command 'clang' failed`.
+
+**Fix:**
+
+1. Install Apple **Command Line Tools** (once): `xcode-select --install`
+2. **Deactivate conda** (`conda deactivate`) — Anaconda's clang breaks this build
+3. Reinstall with system clang:
+
+   ```bash
+   rm -rf .venv
+   ./scripts/sync-env.sh
+   ```
+
+   Or explicitly:
+
+   ```bash
+   CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen --python 3.12
+   ```
+
+On **Windows/Linux**, `geomad` normally installs from a pre-built wheel (no compile).
 
 ### If `llvmlite` still fails to build
 
@@ -135,7 +169,7 @@ without the lock file often pulls a `llvmlite` version that must be compiled fro
 # Step 5 — Verify the install
 
 ```bash
-uv run python -c "from intertidal.elevation import elevation; import odc.stac, planetary_computer, eo_tides; print('Environment OK')"
+uv run python -c "from intertidal.elevation import elevation; import odc.stac, planetary_computer, eo_tides, geomad, llvmlite; print('Environment OK')"
 ```
 
 # Step 6 — Launch Jupyter
@@ -156,7 +190,7 @@ GitHub Pages). Use the helper scripts from the **repo root**:
 **One-time setup:**
 
 ```bash
-uv sync --frozen
+./scripts/sync-env.sh
 uv run python -m ipykernel install --user --name nck --display-name "Python 3 (NCK)"
 uv tool install jupyter-book
 ```

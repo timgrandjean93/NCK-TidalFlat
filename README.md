@@ -40,6 +40,9 @@ uv sync --frozen
 uv run jupyter lab
 ```
 
+On **macOS with Anaconda**, use `./scripts/sync-env.sh` instead — it sets the system
+compiler needed to build `geomad` (see `01_setup.md` Step 4).
+
 ## Build site with execution (pages 2–7)
 
 ```bash
