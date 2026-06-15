@@ -1,7 +1,11 @@
 # myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
 # ---------------------------------------------------------------------------
-# This single file configures the whole site: metadata, the table of contents
-# (which pages appear, in what order), and the site theme.
+# Page order is set by the `toc` below:
+#   1. Home (index.md)
+#   2. Setup — environment & installation (01_setup.md)
+#   3. Connecting to the data services (02_services.md)
+#   4. Route 1 notebook (GEE)
+#   5. Route 2 notebook (PC)
 #
 # Build locally:   jupyter book start      (live preview at localhost:3000)
 # Build static:    jupyter book build --html
@@ -9,14 +13,12 @@
 version: 1
 
 project:
-  id: intertidal-elevation-tutorial
+  id: nck-tidalflat
   title: Mapping Intertidal Elevation
   subtitle: Two open-data routes — Google Earth Engine and Microsoft Planetary Computer
   description: >-
     A graduate-level, reproducible tutorial for mapping intertidal elevation from
-    open satellite imagery (Landsat) and the FES2022 global tide model, with two
-    complementary routes: a cloud-based Google Earth Engine workflow and a
-    local-compute Planetary Computer + DEA Intertidal workflow.
+    open satellite imagery (Landsat) and the FES2022 global tide model.
   keywords:
     - intertidal
     - remote sensing
@@ -25,14 +27,17 @@ project:
     - FES2022
     - tide model
     - coastal geomorphology
-  # IMPORTANT: these notebooks require GEE auth, an AVISO download, and local tide
-  # files, so they CANNOT be executed on a CI server. We ship them as-is and tell
-  # the build not to run them.
+  github: https://github.com/timgrandjean93/NCK-TidalFlat
+
+  # The notebooks need GEE auth / AVISO data / local tide files, so they CANNOT be
+  # executed on a CI server. Publish them exactly as committed.
   jupyter: false
 
-  # Table of contents — the left-hand navigation of the site.
+  # Table of contents — the left-hand site navigation, in order.
   toc:
     - file: index.md
+    - file: 01_setup.md
+    - file: 02_services.md
     - title: Route 1 — Google Earth Engine
       children:
         - file: gee/intertidal_elevation_GEE_tutorial.ipynb
@@ -43,10 +48,7 @@ project:
 site:
   template: book-theme
   options:
-    favicon: null
-    logo_text: Intertidal Elevation Tutorial
-  nav: []
+    logo_text: NCK-TidalFlat
   actions:
     - title: View on GitHub
-      # EDIT this URL to your repository once it exists:
-      url: https://github.com/YOUR-USERNAME/intertidal-elevation-tutorial
+      url: https://github.com/timgrandjean93/NCK-TidalFlat

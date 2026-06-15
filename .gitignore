@@ -1,12 +1,23 @@
-# macOS
-.DS_Store
+# Build output
+_build/
 
-# Jupyter
-.ipynb_checkpoints/
+# Environments
+.venv/
+venv/
+.env
 
 # Python
 __pycache__/
 *.py[cod]
-.venv/
-venv/
-.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local / large data (never commit)
+tide_models/
+*.nc
+*.tif
+*.zarr/
+
+# macOS
+.DS_Store
