@@ -136,6 +136,12 @@ Typical error: `_Float16 is not supported on this target` or `command 'clang' fa
 
 On **Windows/Linux**, `geomad` normally installs from a pre-built wheel (no compile).
 
+:::{note} Harmless warning during macOS install
+You may see: *"No GlobalOverrides context is active… SETUPTOOLS_SCM prefix"*.
+That comes from **building geomad once** and does **not** affect the tutorial. `./scripts/sync-env.sh`
+suppresses it; you can ignore it if you run `uv sync` manually.
+:::
+
 ### If `llvmlite` still fails to build
 
 1. Check Python inside the venv:

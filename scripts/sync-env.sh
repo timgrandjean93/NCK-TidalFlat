@@ -17,6 +17,9 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
   echo "macOS: using CC=$CC CXX=$CXX (needed to build geomad from source)"
 fi
 
+# Harmless setuptools-scm warning during geomad compile on macOS (can ignore).
+export PYTHONWARNINGS="${PYTHONWARNINGS:+$PYTHONWARNINGS,}ignore:No GlobalOverrides context is active:UserWarning"
+
 uv python install 3.12
 uv sync --frozen "$@"
 

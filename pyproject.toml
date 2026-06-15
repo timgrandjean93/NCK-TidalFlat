@@ -37,5 +37,5 @@ dependencies = [
 python-preference = "managed"
 
 # geomad has no macOS wheels — uv must compile from source (Cython).
-# Ensure Cython/numpy are available in the isolated build env.
-extra-build-dependencies = { geomad = ["cython>=3.0", "numpy>=2", "setuptools>=74", "setuptools-scm>=8"] }
+# Pin setuptools-scm <10 to avoid noisy GlobalOverrides warnings during that build.
+extra-build-dependencies = { geomad = ["cython>=3.0", "numpy>=2", "setuptools>=74", "setuptools-scm[toml]>=8,<10"] }
