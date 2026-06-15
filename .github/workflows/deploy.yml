@@ -30,6 +30,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Required for project GitHub Pages (username.github.io/REPO/), not user root sites.
+      # See https://mystmd.org/guide/deployment-github-pages
+      BASE_URL: /${{ github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
