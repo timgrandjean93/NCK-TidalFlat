@@ -13,6 +13,7 @@ Planetary Computer + DEA Intertidal + FES2022. Built with [Jupyter Book 2](https
 | 5 | `05_composites.ipynb` | Yes |
 | 6 | `06_ndwi.ipynb` | Yes |
 | 7 | `07_elevation.ipynb` | Yes |
+| 8 | `08_cleanup.md` | No — uninstall / cleanup instructions only |
 
 ## Repository layout
 
@@ -27,6 +28,7 @@ Planetary Computer + DEA Intertidal + FES2022. Built with [Jupyter Book 2](https
 ├── 05_composites.ipynb
 ├── 06_ndwi.ipynb
 ├── 07_elevation.ipynb
+├── 08_cleanup.md
 ├── cache_utils.py
 ├── pyproject.toml + uv.lock
 ├── images/
@@ -50,3 +52,11 @@ compiler needed to build `geomad` (see `01_setup.md` Step 4).
 ```
 
 Default Jupyter token: `nck-local-execute` (printed by the script).
+
+## Remove local install
+
+```bash
+./scripts/cleanup.sh
+```
+
+See **[8 · Cleanup](08_cleanup.md)** for details and optional steps (tide models, uv, Homebrew).

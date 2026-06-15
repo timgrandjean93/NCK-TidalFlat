@@ -45,7 +45,7 @@ Sentinel-2 (Copernicus, from 2015) offers **10-metre** resolution in key bands a
 
 # About this tutorial
 
-Follow these seven pages in order:
+Follow these eight pages in order:
 
 | Page | What you do |
 |---|---|
@@ -56,6 +56,7 @@ Follow these seven pages in order:
 | **[5 · Composites](05_composites.ipynb)** | Load Sentinel-2 pixels — low- and high-tide RGB composites |
 | **[6 · NDWI](06_ndwi.ipynb)** | How NDWI separates wet from dry — the logic behind height mapping |
 | **[7 · Elevation](07_elevation.ipynb)** | Full intertidal elevation map with `intertidal.elevation()` |
+| **[8 · Cleanup](08_cleanup.md)** | Remove the environment, caches, and kernel — undo the installation *(instructions only)* |
 
 *For FES2022 tide files during the course, ask Tim.*
 

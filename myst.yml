@@ -1,7 +1,7 @@
 # myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
 # ---------------------------------------------------------------------------
 # Tutorial pages (numbered):
-#   Home → 1 Setup (not executed) → 2–7 executable (code runs with --execute)
+#   Home → 1 Setup (not executed) → 2–7 executable → 8 Cleanup (not executed)
 #
 # Live preview + execution:  ./scripts/start-site-execute.sh
 # Static build + execution:   ./scripts/build-site-execute.sh
@@ -41,6 +41,8 @@ project:
       title: "6 · NDWI"
     - file: 07_elevation.ipynb
       title: "7 · Elevation"
+    - file: 08_cleanup.md
+      title: "8 · Cleanup"
 
 site:
   template: book-theme
@@ -64,6 +66,8 @@ site:
       url: /ndwi
     - title: "7 · Elevation"
       url: /elevation
+    - title: "8 · Cleanup"
+      url: /cleanup
   actions:
     - title: View on GitHub
       url: https://github.com/timgrandjean93/NCK-TidalFlat

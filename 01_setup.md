@@ -17,8 +17,9 @@ You will:
 
 1. install **`uv`** (a fast, modern Python project manager),
 2. **clone the tutorial repository** from GitHub,
-3. install all dependencies into the locked environment,
-4. verify the install.
+3. on **macOS**, install **Homebrew** and **OpenMP** (needed to build one dependency),
+4. install all dependencies into the locked environment,
+5. verify the install.
 
 ## Why `uv`?
 
@@ -77,7 +78,67 @@ cd NCK-TidalFlat
 On the [repository page](https://github.com/timgrandjean93/NCK-TidalFlat), click **Code → Download ZIP**, unzip, and `cd` into the folder.
 :::
 
-# Step 4 — Install the environment
+# Step 4 — Install Homebrew (macOS only)
+
+**Skip this step on Windows and Linux** — those platforms install `geomad` from a pre-built wheel.
+
+On **macOS**, one dependency (`geomad`, used by the DEA elevation code) must be **compiled
+locally**. That build needs **OpenMP** (`omp.h`), which Apple’s Xcode tools do not include.
+**Homebrew** is the standard way to install those extra libraries on a Mac.
+
+## What is Homebrew?
+
+[Homebrew](https://brew.sh) (`brew`) is a package manager for macOS — like an app store for
+command-line tools. We use it only to install **`libomp`** (OpenMP) for this tutorial.
+
+## Install Homebrew
+
+Run this in **Terminal** (one line):
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Follow the prompts (your Mac password may be asked). The download takes a few minutes.
+
+## Add `brew` to your PATH
+
+When the installer finishes, it prints **two commands** to run — copy those from your
+terminal. If you no longer see them, use the block for your Mac type:
+
+::::{tab-set}
+:::{tab-item} Apple Silicon (M1/M2/M3/M4)
+```bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+:::
+:::{tab-item} Intel Mac
+```bash
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/usr/local/bin/brew shellenv)"
+```
+:::
+::::
+
+Confirm Homebrew works:
+
+```bash
+brew --version
+```
+
+If you see `brew: command not found`, close Terminal, open a **new** window, and try again.
+
+## Install OpenMP for this tutorial
+
+```bash
+brew install libomp
+```
+
+You only need to do this **once per Mac**. The script `./scripts/sync-env.sh` (next step)
+will install `libomp` automatically if Homebrew is present but `libomp` is still missing.
+
+# Step 5 — Install the environment
 
 All notebooks and dependencies live in the **repository root**.
 
@@ -85,11 +146,10 @@ All notebooks and dependencies live in the **repository root**.
 `geomad`) need matching pre-built wheels or a one-time compile from source.
 
 :::{important} macOS prerequisites (before sync)
-1. **Xcode Command Line Tools:** `xcode-select --install`
-2. **Homebrew:** [https://brew.sh](https://brew.sh)
-3. **OpenMP library:** `brew install libomp` (provides `omp.h` for geomad)
+1. **Xcode Command Line Tools:** `xcode-select --install` (if not already installed)
+2. **Homebrew + OpenMP:** Step 4 above (`brew install libomp`)
 
-The helper script below installs `libomp` automatically if Homebrew is present.
+The helper script below also installs `libomp` automatically if Homebrew is present.
 :::
 
 **Recommended (handles macOS compiler + OpenMP automatically):**
@@ -127,6 +187,7 @@ Typical errors:
 
 | Message | Fix |
 |---|---|
+| `brew: command not found` | Complete **Step 4** (install Homebrew + PATH) |
 | `omp.h file not found` | `brew install libomp`, then `./scripts/sync-env.sh` |
 | `_Float16 is not supported on this target` | `conda deactivate`, use `./scripts/sync-env.sh` |
 | `command 'clang' failed` | `xcode-select --install` |
@@ -192,13 +253,13 @@ suppresses it; you can ignore it if you run `uv sync` manually.
    CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen --python 3.12
    ```
 
-# Step 5 — Verify the install
+# Step 6 — Verify the install
 
 ```bash
 uv run python -c "from intertidal.elevation import elevation; import odc.stac, planetary_computer, eo_tides, geomad, llvmlite; print('Environment OK')"
 ```
 
-# Step 6 — Launch Jupyter
+# Step 7 — Launch Jupyter
 
 ```bash
 uv run jupyter lab
@@ -238,7 +299,7 @@ site at **http://localhost:3000**. You normally open **3000**, not the Jupyter p
 
 ---
 
-# Step 7 — The tide model
+# Step 8 — The tide model
 
 The tutorial needs the **FES2022** tide model on disk. Arrange the constituent files like this:
 
@@ -260,3 +321,5 @@ You can get the FES2022 files directly from **Tim Grandjean** — no AVISO regis
 ---
 
 **Next:** [2 · Connect — Planetary Computer →](02_connect.ipynb)
+
+When you are done with the full tutorial, use **[8 · Cleanup](08_cleanup.md)** to undo the local installation.
