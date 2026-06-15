@@ -1,7 +1,7 @@
 [project]
 name = "nck-tidalflat"
 version = "1.0.0"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.14"
 dependencies = [
   "odc-stac>=0.5.2",
   "planetary-computer>=1.0.0",
@@ -31,3 +31,7 @@ dependencies = [
 ]
 # LET OP: pyTMD NIET toevoegen — eo-tides regelt die. eodatasets3 MOET expliciet
 # erin staan; dea-intertidal importeert het maar declareert het niet.
+
+[tool.uv]
+# Always use uv-managed Python 3.12 — avoids llvmlite source builds on 3.11/3.14.
+python-preference = "managed"

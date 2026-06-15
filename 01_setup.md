@@ -79,23 +79,58 @@ On the [repository page](https://github.com/timgrandjean93/NCK-TidalFlat), click
 
 # Step 4 — Install the environment
 
-All notebooks and dependencies live in the **repository root**:
+All notebooks and dependencies live in the **repository root**.
+
+**Use Python 3.12 or 3.13 only.** The stack pins `llvmlite` to a version with
+pre-built wheels for those releases. Python 3.11 or 3.14 often triggers a
+**source build of llvmlite** (needs LLVM/cmake) and fails with a cryptic compile error.
 
 ```bash
+uv python install 3.12
 uv sync --frozen
 ```
 
 What this does:
 
-1. installs **Python 3.12** if needed;
+1. installs **Python 3.12** via uv if needed (ignores Anaconda/system 3.11);
 2. creates `.venv/` in the project folder;
-3. installs every package at the exact version in `uv.lock`.
+3. installs every package at the exact version in `uv.lock` — including a **binary**
+   `llvmlite` wheel, not a source compile.
 
-On Intel Macs with Anaconda active, if the sync fails compiling packages, try:
+:::{warning} Do not use plain `pip install`
+Install with **`uv sync --frozen`** from the repo root. Mixing conda/pip or installing
+without the lock file often pulls a `llvmlite` version that must be compiled from source.
+:::
 
-```bash
-CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen
-```
+### If `llvmlite` still fails to build
+
+1. Check Python inside the venv:
+
+   ```bash
+   uv run python -V
+   ```
+
+   Expected: `Python 3.12.x` or `Python 3.13.x`. If you see 3.11 or 3.14, remove the
+   broken venv and reinstall:
+
+   ```bash
+   rm -rf .venv
+   uv python install 3.12
+   uv sync --frozen
+   ```
+
+2. On **Intel Macs** with Anaconda still on `PATH`, deactivate conda first
+   (`conda deactivate`) or run sync with explicit Python:
+
+   ```bash
+   uv sync --frozen --python 3.12
+   ```
+
+3. Last resort on Intel Mac (compiler flags):
+
+   ```bash
+   CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen --python 3.12
+   ```
 
 # Step 5 — Verify the install
 
