@@ -1,5 +1,5 @@
 [project]
-name = "intertidal-elevation-pc"
+name = "nck-tidalflat"
 version = "1.0.0"
 requires-python = ">=3.12"
 dependencies = [
@@ -10,15 +10,24 @@ dependencies = [
   "dea-intertidal>=2.5.3",
   "eodatasets3==1.9.3",   # vastgepind: 1.9.5 trekt datacube>=1.9.13 binnen die
                           # rasterio>=1.4.4 forceert, conflict met dea-intertidal
+  # numba/llvmlite vastgepind voor Intel-Macs (x86_64): llvmlite 0.46/0.47 leveren
+  # ALLEEN arm64 macOS-wheels, geen x86_64 — dat forceert een source-build die cmake
+  # + LLVM vereist en faalt. numba 0.62.1 pint llvmlite op 0.45.x, dat wél een Intel
+  # cp312-wheel heeft. Werkt ook op arm64/Linux/Windows. dea-tools eist enkel numba>=0.57.
+  "numba==0.62.1",
+  "llvmlite==0.45.0",
   "eo-tides>=0.10.4",
   "geopandas>=1.1.3",
   "rioxarray>=0.18",
   "xarray>=2026.2",
+  "zarr>=3.0",
   "matplotlib>=3.8",
   "pandas>=2.2",
   "numpy>=1.26",
   "jupyterlab>=4.0",
   "ipykernel>=6.0",
+  "ipywidgets>=8.0",  # tqdm notebook progress bars (IProgress)
+  "rws-ddlpy>=0.10.0",
 ]
 # LET OP: pyTMD NIET toevoegen — eo-tides regelt die. eodatasets3 MOET expliciet
 # erin staan; dea-intertidal importeert het maar declareert het niet.

@@ -4,11 +4,9 @@
 # push to main. This is the workflow `jupyter book init --gh-pages` generates,
 # adapted here so it is ready to commit.
 #
-# IMPORTANT: the notebooks are NOT executed during the build (myst.yml sets
-# `jupyter: false`). They require GEE auth / AVISO data / local tide files that
-# cannot run on a CI server, so they are published exactly as committed. Make
-# sure you commit the notebooks with the output you want visitors to see (or
-# with cleared output if you prefer to show code only).
+# IMPORTANT: notebooks are NOT executed during the CI build. They need local FES2022 tide
+# files that cannot run on a GitHub build server. Publish notebooks exactly as committed,
+# or run ./scripts/build-site-execute.sh locally first.
 # ---------------------------------------------------------------------------
 name: Deploy Jupyter Book to GitHub Pages
 

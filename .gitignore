@@ -1,7 +1,7 @@
 # Build output
 _build/
 
-# Environments
+# Environment
 .venv/
 venv/
 .env
@@ -9,6 +9,9 @@ venv/
 # Python
 __pycache__/
 *.py[cod]
+
+# Notebook execution cache
+cache/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -18,6 +21,9 @@ tide_models/
 *.nc
 *.tif
 *.zarr/
+
+# Notebook output figures (regenerated when running pages 3–7)
+*.png
 
 # macOS
 .DS_Store

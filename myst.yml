@@ -1,49 +1,46 @@
 # myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
 # ---------------------------------------------------------------------------
-# Page order is set by the `toc` below:
-#   1. Home (index.md)
-#   2. Setup — environment & installation (01_setup.md)
-#   3. Connecting to the data services (02_services.md)
-#   4. Route 1 notebook (GEE)
-#   5. Route 2 notebook (PC)
+# Tutorial pages (numbered):
+#   Home → 1 Setup (not executed) → 2–7 executable (code runs with --execute)
 #
-# Build locally:   jupyter book start      (live preview at localhost:3000)
-# Build static:    jupyter book build --html
+# Live preview + execution:  ./scripts/start-site-execute.sh
+# Static build + execution:   ./scripts/build-site-execute.sh
 # ---------------------------------------------------------------------------
 version: 1
 
 project:
   id: nck-tidalflat
   title: Mapping Intertidal Elevation
-  subtitle: Two open-data routes — Google Earth Engine and Microsoft Planetary Computer
+  subtitle: Planetary Computer + DEA Intertidal + FES2022
   description: >-
-    A graduate-level, reproducible tutorial for mapping intertidal elevation from
-    open satellite imagery (Landsat) and the FES2022 global tide model.
+    A graduate-level tutorial for mapping intertidal elevation from open satellite
+    imagery and the FES2022 global tide model.
   keywords:
     - intertidal
     - remote sensing
-    - Google Earth Engine
     - Planetary Computer
     - FES2022
-    - tide model
     - coastal geomorphology
   github: https://github.com/timgrandjean93/NCK-TidalFlat
 
-  # The notebooks need GEE auth / AVISO data / local tide files, so they CANNOT be
-  # executed on a CI server. Publish them exactly as committed.
   jupyter: false
 
-  # Table of contents — the left-hand site navigation, in order.
   toc:
     - file: index.md
     - file: 01_setup.md
-    - file: 02_services.md
-    - title: Route 1 — Google Earth Engine
-      children:
-        - file: gee/intertidal_elevation_GEE_tutorial.ipynb
-    - title: Route 2 — Planetary Computer + DEA
-      children:
-        - file: pc/intertidal_elevation_PC_tutorial.ipynb
+      title: "1 · Setup"
+    - file: 02_connect.ipynb
+      title: "2 · Connect"
+    - file: 03_tides.ipynb
+      title: "3 · Tides"
+    - file: 04_validation.ipynb
+      title: "4 · Validation"
+    - file: 05_composites.ipynb
+      title: "5 · Composites"
+    - file: 06_ndwi.ipynb
+      title: "6 · NDWI"
+    - file: 07_elevation.ipynb
+      title: "7 · Elevation"
 
 site:
   template: book-theme
@@ -52,17 +49,21 @@ site:
     outline_maxdepth: 3
   nav:
     - title: Home
-      url: /
-    - title: Setup
-      url: /01-setup
-    - title: Data Services
-      url: /02-services
-    - title: Routes
-      children:
-        - title: Route 1 — Earth Engine
-          url: /intertidal-elevation-gee-tutorial
-        - title: Route 2 — Planetary Computer
-          url: /intertidal-elevation-pc-tutorial
+      url: index
+    - title: "1 · Setup"
+      url: /setup
+    - title: "2 · Connect"
+      url: /connect
+    - title: "3 · Tides"
+      url: /tides
+    - title: "4 · Validation"
+      url: /validation
+    - title: "5 · Composites"
+      url: /composites
+    - title: "6 · NDWI"
+      url: /ndwi
+    - title: "7 · Elevation"
+      url: /elevation
   actions:
     - title: View on GitHub
       url: https://github.com/timgrandjean93/NCK-TidalFlat
