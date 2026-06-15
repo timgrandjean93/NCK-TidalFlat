@@ -22,7 +22,7 @@ tide_models/
 *.tif
 *.zarr/
 
-# Notebook output figures (regenerated when running pages 3–7)
+# Notebook output figures (regenerated when running pages 3–6)
 *.png
 
 # macOS

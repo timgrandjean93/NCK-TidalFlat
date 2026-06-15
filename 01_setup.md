@@ -7,7 +7,7 @@ execute:
 
 # 1 · Setup — Environment & Installation
 
-This page takes you from a clean computer to a fully working environment. The pages **2–7**
+This page takes you from a clean computer to a fully working environment. The pages **2–6**
 contain executable code; this page is instructions only (install `uv`, clone the repo,
 install `.venv`).
 
@@ -322,4 +322,4 @@ You can get the FES2022 files directly from **Tim Grandjean** — no AVISO regis
 
 **Next:** [2 · Connect — Planetary Computer →](02_connect.ipynb)
 
-When you are done with the full tutorial, use **[8 · Cleanup](08_cleanup.md)** to undo the local installation.
+When you are done with the full tutorial, use **[7 · Cleanup](07_cleanup.md)** to undo the local installation.

@@ -1,7 +1,7 @@
 # myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
 # ---------------------------------------------------------------------------
 # Tutorial pages (numbered):
-#   Home → 1 Setup (not executed) → 2–7 executable → 8 Cleanup (not executed)
+#   Home → 1 Setup (not executed) → 2–6 executable → 7 Cleanup (not executed)
 #
 # Live preview + execution:  ./scripts/start-site-execute.sh
 # Static build + execution:   ./scripts/build-site-execute.sh
@@ -35,14 +35,12 @@ project:
       title: "3 · Tides"
     - file: 04_validation.ipynb
       title: "4 · Validation"
-    - file: 05_composites.ipynb
-      title: "5 · Composites"
-    - file: 06_ndwi.ipynb
-      title: "6 · NDWI"
-    - file: 07_elevation.ipynb
-      title: "7 · Elevation"
-    - file: 08_cleanup.md
-      title: "8 · Cleanup"
+    - file: 05_ndwi.ipynb
+      title: "5 · NDWI"
+    - file: 06_elevation.ipynb
+      title: "6 · Elevation"
+    - file: 07_cleanup.md
+      title: "7 · Cleanup"
 
 site:
   template: book-theme
@@ -60,13 +58,11 @@ site:
       url: /tides
     - title: "4 · Validation"
       url: /validation
-    - title: "5 · Composites"
-      url: /composites
-    - title: "6 · NDWI"
+    - title: "5 · NDWI"
       url: /ndwi
-    - title: "7 · Elevation"
+    - title: "6 · Elevation"
       url: /elevation
-    - title: "8 · Cleanup"
+    - title: "7 · Cleanup"
       url: /cleanup
   actions:
     - title: View on GitHub

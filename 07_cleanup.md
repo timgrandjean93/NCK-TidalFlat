@@ -1,11 +1,11 @@
 ---
-title: 8 · Cleanup — undo the installation
-short_title: 8 · Cleanup
+title: 7 · Cleanup — undo the installation
+short_title: 7 · Cleanup
 execute:
   skip: true
 ---
 
-# 8 · Cleanup — undo the installation
+# 7 · Cleanup — undo the installation
 
 ### Remove everything the tutorial created on your computer
 
@@ -13,7 +13,7 @@ This page reverses **[1 · Setup](01_setup.md)** and the notebook runs. Nothing 
 your GitHub account, Planetary Computer access, or anything on Microsoft's servers — only
 **local files and settings** on your machine.
 
-**Previous:** [7 · Elevation](07_elevation.ipynb)
+**Previous:** [6 · Elevation](06_elevation.ipynb)
 
 ---
 
@@ -147,4 +147,4 @@ again.
 
 **You finished the tutorial chain:**
 
-Setup → Connect → Tides → Validation → Composites → NDWI → Elevation → **Cleanup**
+Setup → Connect → Tides → Validation → NDWI → Elevation → **Cleanup**
