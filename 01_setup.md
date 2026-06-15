@@ -84,7 +84,15 @@ All notebooks and dependencies live in the **repository root**.
 **Use Python 3.12 or 3.13 only.** Several packages (`llvmlite`, and on macOS also
 `geomad`) need matching pre-built wheels or a one-time compile from source.
 
-**Recommended (handles macOS compiler quirks automatically):**
+:::{important} macOS prerequisites (before sync)
+1. **Xcode Command Line Tools:** `xcode-select --install`
+2. **Homebrew:** [https://brew.sh](https://brew.sh)
+3. **OpenMP library:** `brew install libomp` (provides `omp.h` for geomad)
+
+The helper script below installs `libomp` automatically if Homebrew is present.
+:::
+
+**Recommended (handles macOS compiler + OpenMP automatically):**
 
 ```bash
 chmod +x scripts/sync-env.sh   # once
@@ -115,23 +123,35 @@ Mixing conda/pip or installing without the lock file often triggers failed sourc
 **Linux and Windows only** — on **macOS it must compile locally** (~20 s with the
 right compiler).
 
-Typical error: `_Float16 is not supported on this target` or `command 'clang' failed`.
+Typical errors:
+
+| Message | Fix |
+|---|---|
+| `omp.h file not found` | `brew install libomp`, then `./scripts/sync-env.sh` |
+| `_Float16 is not supported on this target` | `conda deactivate`, use `./scripts/sync-env.sh` |
+| `command 'clang' failed` | `xcode-select --install` |
 
 **Fix:**
 
 1. Install Apple **Command Line Tools** (once): `xcode-select --install`
-2. **Deactivate conda** (`conda deactivate`) — Anaconda's clang breaks this build
-3. Reinstall with system clang:
+2. Install **OpenMP**: `brew install libomp`
+3. **Deactivate conda** (`conda deactivate`) — Anaconda's clang breaks this build
+4. Reinstall with system clang + OpenMP paths:
 
    ```bash
    rm -rf .venv
    ./scripts/sync-env.sh
    ```
 
-   Or explicitly:
+   Or explicitly (after `brew install libomp`):
 
    ```bash
-   CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen --python 3.12
+   LIBOMP="$(brew --prefix libomp)"
+   export CC=/usr/bin/clang CXX=/usr/bin/clang++
+   export CPATH="${LIBOMP}/include"
+   export CFLAGS="-I${LIBOMP}/include -Xpreprocessor -fopenmp"
+   export LDFLAGS="-L${LIBOMP}/lib -lomp"
+   uv sync --frozen --python 3.12
    ```
 
 On **Windows/Linux**, `geomad` normally installs from a pre-built wheel (no compile).

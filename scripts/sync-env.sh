@@ -12,9 +12,34 @@ cd "$ROOT"
 if [[ "$(uname -s)" == "Darwin" ]]; then
   # Anaconda/conda clang often breaks geomad Cython builds (_Float16 SDK errors).
   # Apple system clang from Xcode Command Line Tools is reliable.
-  export CC="${CC:-/usr/bin/clang}"
-  export CXX="${CXX:-/usr/bin/clang++}"
+  # Force system clang (ignore conda CC already in the shell).
+  export CC="/usr/bin/clang"
+  export CXX="/usr/bin/clang++"
   echo "macOS: using CC=$CC CXX=$CXX (needed to build geomad from source)"
+
+  # geomad uses OpenMP (see geomad/setup.py: cimport openmp in pcm.pyx).
+  # Xcode clang does NOT ship omp.h — install libomp via Homebrew.
+  if ! command -v brew &>/dev/null; then
+    echo "ERROR: Homebrew is required on macOS (for libomp / OpenMP)."
+    echo "       Install from https://brew.sh then re-run: ./scripts/sync-env.sh"
+    exit 1
+  fi
+  if ! brew list libomp &>/dev/null 2>&1; then
+    echo "Installing libomp (OpenMP headers — required by geomad) ..."
+    brew install libomp
+  fi
+  LIBOMP="$(brew --prefix libomp)"
+  if [[ ! -f "${LIBOMP}/include/omp.h" ]]; then
+    echo "ERROR: omp.h not found under ${LIBOMP}/include"
+    echo "       Try: brew reinstall libomp"
+    exit 1
+  fi
+  # geomad's setup.py hardcodes /usr/local/include; CPATH/CFLAGS cover Apple Silicon too.
+  export CPATH="${LIBOMP}/include${CPATH:+:$CPATH}"
+  export LIBRARY_PATH="${LIBOMP}/lib${LIBRARY_PATH:+:$LIBRARY_PATH}"
+  export CFLAGS="-I${LIBOMP}/include -Xpreprocessor -fopenmp${CFLAGS:+ $CFLAGS}"
+  export LDFLAGS="-L${LIBOMP}/lib -lomp${LDFLAGS:+ $LDFLAGS}"
+  echo "macOS: OpenMP from ${LIBOMP}"
 fi
 
 # Harmless setuptools-scm warning during geomad compile on macOS (can ignore).
