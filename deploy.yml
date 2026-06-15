@@ -1,0 +1,65 @@
+# .github/workflows/deploy.yml
+# ---------------------------------------------------------------------------
+# Builds the Jupyter Book (MyST) site and deploys it to GitHub Pages on every
+# push to main. This is the workflow `jupyter book init --gh-pages` generates,
+# adapted here so it is ready to commit.
+#
+# IMPORTANT: the notebooks are NOT executed during the build (myst.yml sets
+# `jupyter: false`). They require GEE auth / AVISO data / local tide files that
+# cannot run on a CI server, so they are published exactly as committed. Make
+# sure you commit the notebooks with the output you want visitors to see (or
+# with cleared output if you prefer to show code only).
+# ---------------------------------------------------------------------------
+name: Deploy Jupyter Book to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Allow manual runs from the Actions tab:
+  workflow_dispatch:
+
+# Permissions needed for GitHub Pages deployment:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; cancel in-progress runs on new pushes:
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node (MyST engine runs on Node)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Jupyter Book (MyST)
+        run: pip install "jupyter-book==2.1.5"
+
+      - name: Build the site (static HTML)
+        run: jupyter book build --html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Jupyter Book 2 writes the static site here:
+          path: ./_build/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

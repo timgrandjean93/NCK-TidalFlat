@@ -1,0 +1,52 @@
+# myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
+# ---------------------------------------------------------------------------
+# This single file configures the whole site: metadata, the table of contents
+# (which pages appear, in what order), and the site theme.
+#
+# Build locally:   jupyter book start      (live preview at localhost:3000)
+# Build static:    jupyter book build --html
+# ---------------------------------------------------------------------------
+version: 1
+
+project:
+  id: intertidal-elevation-tutorial
+  title: Mapping Intertidal Elevation
+  subtitle: Two open-data routes — Google Earth Engine and Microsoft Planetary Computer
+  description: >-
+    A graduate-level, reproducible tutorial for mapping intertidal elevation from
+    open satellite imagery (Landsat) and the FES2022 global tide model, with two
+    complementary routes: a cloud-based Google Earth Engine workflow and a
+    local-compute Planetary Computer + DEA Intertidal workflow.
+  keywords:
+    - intertidal
+    - remote sensing
+    - Google Earth Engine
+    - Planetary Computer
+    - FES2022
+    - tide model
+    - coastal geomorphology
+  # IMPORTANT: these notebooks require GEE auth, an AVISO download, and local tide
+  # files, so they CANNOT be executed on a CI server. We ship them as-is and tell
+  # the build not to run them.
+  jupyter: false
+
+  # Table of contents — the left-hand navigation of the site.
+  toc:
+    - file: index.md
+    - title: Route 1 — Google Earth Engine
+      children:
+        - file: gee/intertidal_elevation_GEE_tutorial.ipynb
+    - title: Route 2 — Planetary Computer + DEA
+      children:
+        - file: pc/intertidal_elevation_PC_tutorial.ipynb
+
+site:
+  template: book-theme
+  options:
+    favicon: null
+    logo_text: Intertidal Elevation Tutorial
+  nav: []
+  actions:
+    - title: View on GitHub
+      # EDIT this URL to your repository once it exists:
+      url: https://github.com/YOUR-USERNAME/intertidal-elevation-tutorial
