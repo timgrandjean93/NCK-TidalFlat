@@ -12,7 +12,8 @@ Planetary Computer + DEA Intertidal + FES2022. Built with [Jupyter Book 2](https
 | 4 | `04_validation.ipynb` | Yes |
 | 5 | `05_ndwi.ipynb` | Yes |
 | 6 | `06_elevation.ipynb` | Yes |
-| 7 | `07_cleanup.md` | No — uninstall / cleanup instructions only |
+
+After page 6, see **`07_applications.md`** (discussion & project ideas; not executed on site).
 
 ## Repository layout
 
@@ -26,8 +27,12 @@ Planetary Computer + DEA Intertidal + FES2022. Built with [Jupyter Book 2](https
 ├── 04_validation.ipynb
 ├── 05_ndwi.ipynb
 ├── 06_elevation.ipynb
+├── 07_applications.md
 ├── 07_cleanup.md
+├── 08_disclaimer.md
 ├── cache_utils.py
+├── images/
+│   └── tidalflat_logo.png
 ├── pyproject.toml + uv.lock
 ├── images/
 └── scripts/
@@ -57,4 +62,8 @@ Default Jupyter token: `nck-local-execute` (printed by the script).
 ./scripts/cleanup.sh
 ```
 
-See **[7 · Cleanup](07_cleanup.md)** for details and optional steps (tide models, uv, Homebrew).
+See **[Cleanup](07_cleanup.md)** for details and optional steps (tide models, uv, Homebrew).
+
+## Credits & citations
+
+See **[Disclaimer](08_disclaimer.md)** — course contacts and collaboration beyond the tutorial.

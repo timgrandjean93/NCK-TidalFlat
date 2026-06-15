@@ -1,0 +1,29 @@
+/* Site overrides — larger header logo without increasing navbar height */
+
+.myst-top-nav {
+  /* Theme default: min-h-[60px] + p-3 — keep bar height, tighten vertical padding */
+  min-height: 60px;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+.myst-top-nav .myst-home-link-logo {
+  overflow: visible;
+  margin-right: 0.5rem;
+}
+
+.myst-top-nav .myst-home-link-logo img {
+  /* Theme default: h-9 (36px) — widen readable banner logo */
+  height: 48px !important;
+  width: auto !important;
+  max-width: min(520px, calc(100vw - 6rem));
+  object-fit: contain;
+}
+
+/* Slightly larger on wide screens where the sidebar leaves room */
+@media (min-width: 1280px) {
+  .myst-top-nav .myst-home-link-logo img {
+    height: 52px !important;
+    max-width: min(560px, calc(100vw - 22rem));
+  }
+}

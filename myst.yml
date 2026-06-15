@@ -1,7 +1,10 @@
 # myst.yml — Jupyter Book 2 (MyST Document Engine) configuration
 # ---------------------------------------------------------------------------
 # Tutorial pages (numbered):
-#   Home → 1 Setup (not executed) → 2–6 executable → 7 Cleanup (not executed)
+#   Home → 1 Setup → 2–6 executable; Applications, Cleanup, Disclaimer unnumbered
+#
+# Navigation: sidebar TOC only (no top nav bar links)
+# Logo: images/tidalflat_logo.png
 #
 # Live preview + execution:  ./scripts/start-site-execute.sh
 # Static build + execution:   ./scripts/build-site-execute.sh
@@ -27,6 +30,7 @@ project:
 
   toc:
     - file: index.md
+      title: "Home"
     - file: 01_setup.md
       title: "1 · Setup"
     - file: 02_connect.ipynb
@@ -39,31 +43,20 @@ project:
       title: "5 · NDWI"
     - file: 06_elevation.ipynb
       title: "6 · Elevation"
+    - file: 07_applications.md
+      title: "Applications"
     - file: 07_cleanup.md
-      title: "7 · Cleanup"
+      title: "Cleanup"
+    - file: 08_disclaimer.md
+      title: "Disclaimer"
 
 site:
   template: book-theme
   options:
-    logo_text: NCK-TidalFlat
-    outline_maxdepth: 3
-  nav:
-    - title: Home
-      url: index
-    - title: "1 · Setup"
-      url: /setup
-    - title: "2 · Connect"
-      url: /connect
-    - title: "3 · Tides"
-      url: /tides
-    - title: "4 · Validation"
-      url: /validation
-    - title: "5 · NDWI"
-      url: /ndwi
-    - title: "6 · Elevation"
-      url: /elevation
-    - title: "7 · Cleanup"
-      url: /cleanup
-  actions:
-    - title: View on GitHub
-      url: https://github.com/timgrandjean93/NCK-TidalFlat
+    logo: images/tidalflat_logo.png
+    logo_alt: Tidal Flat Elevation Mapping
+    logo_url: /
+    outline_maxdepth: 2
+    style: styles/site.css
+  nav: []
+  actions: []

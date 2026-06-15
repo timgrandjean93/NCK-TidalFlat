@@ -12,6 +12,7 @@ __pycache__/
 
 # Notebook execution cache
 cache/
+outputs/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -24,6 +25,7 @@ tide_models/
 
 # Notebook output figures (regenerated when running pages 3–6)
 *.png
+!images/**/*.png
 
 # macOS
 .DS_Store

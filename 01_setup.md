@@ -5,303 +5,113 @@ execute:
   skip: true
 ---
 
-# 1 · Setup — Environment & Installation
-
-This page takes you from a clean computer to a fully working environment. The pages **2–6**
-contain executable code; this page is instructions only (install `uv`, clone the repo,
-install `.venv`).
-
-The next page is **[2 · Connect — Planetary Computer](02_connect.ipynb)**.
-
-You will:
-
-1. install **`uv`** (a fast, modern Python project manager),
-2. **clone the tutorial repository** from GitHub,
-3. on **macOS**, install **Homebrew** and **OpenMP** (needed to build one dependency),
-4. install all dependencies into the locked environment,
-5. verify the install.
-
-## Why `uv`?
-
-Python has several tools for installing packages and managing environments, and they overlap in confusing ways. We chose uv for this tutorial because it does the most for the least effort — *but if you already work with another tool, you are welcome to keep using it*.
-
-| Tool | Installs Python itself? | Manages environments? | Installs packages? | Lock file (exact reproducibility)? | Notes |
-|---|---|---|---|---|---|
-| **`uv`** | Yes | Yes | Yes | Yes (`uv.lock`) | One fast tool for everything; what this tutorial uses |
-| pip + venv | No | Yes (`venv`) | Yes (`pip`) | Not by default | The classic built-in combination; you supply Python yourself |
-| conda / Miniforge | Yes | Yes | Yes | Partial (`environment.yml`) | Strong for non-Python/compiled libraries; slower to resolve |
-| Poetry | No | Yes | Yes | Yes (`poetry.lock`) | Project-focused; you supply Python yourself |
+This page takes you from a clean computer to a working environment. It contains
+instructions only — no code is executed here. Pages 2–6 contain the actual analysis.
 
 # Step 1 — Install `uv`
 
-Run the one command for your operating system in a **terminal** (also called a command line or prompt).
+`uv` is a Python project manager that installs the correct Python version for you,
+creates an isolated environment, and ensures everyone working with this tutorial gets
+identical package versions. You do not need to install Python first.
+
+Open a terminal and run the command for your system:
 
 ::::{tab-set}
 :::{tab-item} macOS / Linux
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
+Close and reopen your terminal, then confirm it worked:
+```bash
+uv --version
+```
 :::
 :::{tab-item} Windows (PowerShell)
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
+Open a new PowerShell window, then confirm:
+```powershell
+uv --version
+```
 :::
 ::::
 
-Confirm it works:
+> **New to terminals?** A terminal is a window where you type commands. On macOS open
+> *Terminal* (`Cmd + Space` → "Terminal"). On Windows open *PowerShell*
+> (Start → "PowerShell"). The command `pwd` prints your current location; `ls`
+> (macOS/Linux) or `dir` (Windows) lists what is in the current folder.
 
-```bash
-uv --version
-```
+---
 
-# Step 2 — Open the working folder
+# Step 2 — Get the tutorial code
 
-The command `cd` ("change directory") moves you into a folder. If you are not sure where you
-are: `pwd` (macOS/Linux) or `cd` on its own (Windows) prints your current location; `ls` or
-`dir` lists what is in the folder.
-
-# Step 3 — Get the material from GitHub
+Check that `git` is available:
 
 ```bash
 git --version
 ```
 
-If you see a version number, clone the repository:
+Then clone the repository and move into it:
 
 ```bash
 git clone https://github.com/timgrandjean93/NCK-TidalFlat.git
 cd NCK-TidalFlat
 ```
 
-:::{tip} No git? Download a ZIP instead
-On the [repository page](https://github.com/timgrandjean93/NCK-TidalFlat), click **Code → Download ZIP**, unzip, and `cd` into the folder.
+:::{tip} No git?
+On the [repository page](https://github.com/timgrandjean93/NCK-TidalFlat), click
+**Code → Download ZIP**, unzip the file, and `cd` into the resulting folder.
+Cloning with `git` is preferred because you can pull updates later with `git pull`.
 :::
 
-# Step 4 — Install Homebrew (macOS only)
+---
 
-**Skip this step on Windows and Linux** — those platforms install `geomad` from a pre-built wheel.
+# Step 3 — Install the environment
 
-On **macOS**, one dependency (`geomad`, used by the DEA elevation code) must be **compiled
-locally**. That build needs **OpenMP** (`omp.h`), which Apple’s Xcode tools do not include.
-**Homebrew** is the standard way to install those extra libraries on a Mac.
-
-## What is Homebrew?
-
-[Homebrew](https://brew.sh) (`brew`) is a package manager for macOS — like an app store for
-command-line tools. We use it only to install **`libomp`** (OpenMP) for this tutorial.
-
-## Install Homebrew
-
-Run this in **Terminal** (one line):
+From inside the `NCK-TidalFlat` folder, run:
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Follow the prompts (your Mac password may be asked). The download takes a few minutes.
-
-## Add `brew` to your PATH
-
-When the installer finishes, it prints **two commands** to run — copy those from your
-terminal. If you no longer see them, use the block for your Mac type:
-
-::::{tab-set}
-:::{tab-item} Apple Silicon (M1/M2/M3/M4)
-```bash
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-```
-:::
-:::{tab-item} Intel Mac
-```bash
-echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/usr/local/bin/brew shellenv)"
-```
-:::
-::::
-
-Confirm Homebrew works:
-
-```bash
-brew --version
-```
-
-If you see `brew: command not found`, close Terminal, open a **new** window, and try again.
-
-## Install OpenMP for this tutorial
-
-```bash
-brew install libomp
-```
-
-You only need to do this **once per Mac**. The script `./scripts/sync-env.sh` (next step)
-will install `libomp` automatically if Homebrew is present but `libomp` is still missing.
-
-# Step 5 — Install the environment
-
-All notebooks and dependencies live in the **repository root**.
-
-**Use Python 3.12 or 3.13 only.** Several packages (`llvmlite`, and on macOS also
-`geomad`) need matching pre-built wheels or a one-time compile from source.
-
-:::{important} macOS prerequisites (before sync)
-1. **Xcode Command Line Tools:** `xcode-select --install` (if not already installed)
-2. **Homebrew + OpenMP:** Step 4 above (`brew install libomp`)
-
-The helper script below also installs `libomp` automatically if Homebrew is present.
-:::
-
-**Recommended (handles macOS compiler + OpenMP automatically):**
-
-```bash
-chmod +x scripts/sync-env.sh   # once
 ./scripts/sync-env.sh
 ```
 
-Or manually:
+This single script does everything: it installs Python 3.12, creates a `.venv/` folder,
+and installs all packages at the exact versions recorded in `uv.lock`. It also handles
+the macOS-specific compiler requirements automatically.
 
-```bash
+On **Windows**, run the equivalent directly:
+
+```powershell
 uv python install 3.12
 uv sync --frozen
 ```
 
-What this does:
-
-1. installs **Python 3.12** via uv if needed (ignores Anaconda/system 3.11);
-2. creates `.venv/` in the project folder;
-3. installs every package at the exact version in `uv.lock`.
-
-:::{warning} Do not use plain `pip install`
-Install with **`uv sync --frozen`** (or `./scripts/sync-env.sh`) from the repo root.
-Mixing conda/pip or installing without the lock file often triggers failed source builds.
-:::
-
-### If `geomad==1.0.0` fails to build (macOS)
-
-`geomad` is a **Cython extension** pulled in by DEA/odc-algo. PyPI ships wheels for
-**Linux and Windows only** — on **macOS it must compile locally** (~20 s with the
-right compiler).
-
-Typical errors:
-
-| Message | Fix |
-|---|---|
-| `brew: command not found` | Complete **Step 4** (install Homebrew + PATH) |
-| `omp.h file not found` | `brew install libomp`, then `./scripts/sync-env.sh` |
-| `_Float16 is not supported on this target` | `conda deactivate`, use `./scripts/sync-env.sh` |
-| `command 'clang' failed` | `xcode-select --install` |
-
-**Fix:**
-
-1. Install Apple **Command Line Tools** (once): `xcode-select --install`
-2. Install **OpenMP**: `brew install libomp`
-3. **Deactivate conda** (`conda deactivate`) — Anaconda's clang breaks this build
-4. Reinstall with system clang + OpenMP paths:
-
-   ```bash
-   rm -rf .venv
-   ./scripts/sync-env.sh
-   ```
-
-   Or explicitly (after `brew install libomp`):
-
-   ```bash
-   LIBOMP="$(brew --prefix libomp)"
-   export CC=/usr/bin/clang CXX=/usr/bin/clang++
-   export CPATH="${LIBOMP}/include"
-   export CFLAGS="-I${LIBOMP}/include -Xpreprocessor -fopenmp"
-   export LDFLAGS="-L${LIBOMP}/lib -lomp"
-   uv sync --frozen --python 3.12
-   ```
-
-On **Windows/Linux**, `geomad` normally installs from a pre-built wheel (no compile).
-
-:::{note} Harmless warning during macOS install
-You may see: *"No GlobalOverrides context is active… SETUPTOOLS_SCM prefix"*.
-That comes from **building geomad once** and does **not** affect the tutorial. `./scripts/sync-env.sh`
-suppresses it; you can ignore it if you run `uv sync` manually.
-:::
-
-### If `llvmlite` still fails to build
-
-1. Check Python inside the venv:
-
-   ```bash
-   uv run python -V
-   ```
-
-   Expected: `Python 3.12.x` or `Python 3.13.x`. If you see 3.11 or 3.14, remove the
-   broken venv and reinstall:
-
-   ```bash
-   rm -rf .venv
-   uv python install 3.12
-   uv sync --frozen
-   ```
-
-2. On **Intel Macs** with Anaconda still on `PATH`, deactivate conda first
-   (`conda deactivate`) or run sync with explicit Python:
-
-   ```bash
-   uv sync --frozen --python 3.12
-   ```
-
-3. Last resort on Intel Mac (compiler flags):
-
-   ```bash
-   CC=/usr/bin/clang CXX=/usr/bin/clang++ uv sync --frozen --python 3.12
-   ```
-
-# Step 6 — Verify the install
-
-```bash
-uv run python -c "from intertidal.elevation import elevation; import odc.stac, planetary_computer, eo_tides, geomad, llvmlite; print('Environment OK')"
-```
-
-# Step 7 — Launch Jupyter
-
-```bash
-uv run jupyter lab
-```
-
-Always start Jupyter from the **repository root** with `uv run jupyter lab`, not a system-wide install.
+The first run takes a few minutes. Subsequent runs are instant.
 
 ---
 
-## Optional — build the website with executed notebooks
-
-The tutorial site can **run notebooks at build time** and embed plots on your machine (not on
-GitHub Pages). Use the helper scripts from the **repo root**:
-
-**One-time setup:**
+# Step 4 — Verify the install
 
 ```bash
-./scripts/sync-env.sh
-uv run python -m ipykernel install --user --name nck --display-name "Python 3 (NCK)"
-uv tool install jupyter-book
+uv run python -c "from intertidal.elevation import elevation; import odc.stac, planetary_computer, eo_tides; print('Environment OK')"
 ```
 
-**Live preview with execution:**
-
-```bash
-./scripts/start-site-execute.sh
-```
-
-The script prints a **fixed Jupyter token** (default: `nck-local-execute`) and starts the
-site at **http://localhost:3000**. You normally open **3000**, not the Jupyter port (8888).
-
-**Static build with execution:**
-
-```bash
-./scripts/build-site-execute.sh
-```
+If you see `Environment OK`, everything is in place.
 
 ---
 
-# Step 8 — The tide model
+# Step 5 — Get the FES2022 tide model
 
-The tutorial needs the **FES2022** tide model on disk. Arrange the constituent files like this:
+The tutorial needs the FES2022 tide model files on disk from page 3 onward.
+
+**Where to get the files**
+
+| Route | Who | Notes |
+|---|---|---|
+| **Course / NCK participants** | [Tim Grandjean](mailto:tim.grandjean@nioz.nl) | Pre-packaged `tide_models/` folder; no AVISO registration |
+| **Self-service** | [AVISO+ / CNES](https://www.aviso.altimetry.fr/en/data/products/auxiliary-products/global-tide-fes.html) | Free registration; download **FES2022b** ocean tide constituents (~1 GB) |
+
+Arrange them like this:
 
 ```
 tide_models/
@@ -309,17 +119,89 @@ tide_models/
     └── ocean_tide_20241025/
         ├── m2_fes2022.nc
         ├── s2_fes2022.nc
-        └── ...   (~34 constituents)
+        └── ...
 ```
 
-Point each notebook's `TIDE_DIR` at the folder containing `fes2022b/`.
+Set `TIDE_DIR` in each notebook to the folder containing `fes2022b/` (default:
+`./tide_models`).
 
-:::{note} Taking this as a course?
-You can get the FES2022 files directly from **Tim Grandjean** — no AVISO registration needed.
+---
+
+# Step 6 — Launch Jupyter
+
+All analysis pages in this tutorial (**Connect** through **Elevation**, pages 2–6) are
+**Jupyter notebooks** (`.ipynb`). Open them in Jupyter and run the cells from top to
+bottom — each notebook is self-contained and executable once this setup is complete.
+
+```bash
+uv run jupyter lab
+```
+
+JupyterLab opens in your browser. Use the file browser on the left to open
+`02_connect.ipynb`, then continue in order through `06_elevation.ipynb`. Run a cell
+with **Shift + Enter** (or the ▶ Run button).
+
+Prefer the classic interface? That works too:
+
+```bash
+uv run jupyter notebook
+```
+
+Always start Jupyter from the **repository root** with `uv run` so the `nck` environment
+and packages are used — not a system-wide Python install.
+
+:::{tip} Reading vs running
+You can also read this site in the browser (`jupyter book start`), but to **execute** the
+analysis yourself, use Jupyter Lab or Notebook as above.
 :::
 
 ---
 
-**Next:** [2 · Connect — Planetary Computer →](02_connect.ipynb)
+# Troubleshooting
 
-When you are done with the full tutorial, use **[7 · Cleanup](07_cleanup.md)** to undo the local installation.
+:::{dropdown} Troubleshooting — installation problems
+
+**`uv: command not found`**
+Close and reopen your terminal. On Windows, open a new PowerShell window.
+
+---
+
+**macOS: `omp.h file not found` or `geomad` build failure**
+OpenMP is missing. Install Homebrew and then `libomp`:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install libomp
+rm -rf .venv && ./scripts/sync-env.sh
+```
+
+---
+
+**macOS: `_Float16 is not supported on this target`**
+Anaconda's compiler is interfering. Run `conda deactivate` first, then retry:
+```bash
+rm -rf .venv && ./scripts/sync-env.sh
+```
+
+---
+
+**`llvmlite` build failure**
+Check your Python version:
+```bash
+uv run python -V
+```
+Expected: `Python 3.12.x`. If you see 3.11 or 3.14, reinstall:
+```bash
+rm -rf .venv && uv python install 3.12 && uv sync --frozen
+```
+
+---
+
+**Wrong kernel in Jupyter**
+Always start Jupyter with `uv run jupyter lab` from the repo root,
+not a system-wide Jupyter installation.
+
+:::
+
+---
+
+**Next:** [2 · Connect →](02_connect.ipynb)

@@ -1,19 +1,16 @@
 ---
-title: 7 · Cleanup — undo the installation
-short_title: 7 · Cleanup
+title: Cleanup — undo the installation
+short_title: Cleanup
 execute:
   skip: true
 ---
 
-# 7 · Cleanup — undo the installation
+# Cleanup — undo the installation
 
-### Remove everything the tutorial created on your computer
-
-This page reverses **[1 · Setup](01_setup.md)** and the notebook runs. Nothing here deletes
-your GitHub account, Planetary Computer access, or anything on Microsoft's servers — only
-**local files and settings** on your machine.
-
-**Previous:** [6 · Elevation](06_elevation.ipynb)
+This page is **optional** — not part of the numbered tutorial flow. It reverses
+**[1 · Setup](01_setup.md)** and the notebook runs. Nothing here deletes your GitHub
+account, Planetary Computer access, or anything on Microsoft's servers — only **local
+files and settings** on your machine.
 
 ---
 
@@ -142,9 +139,3 @@ jupyter kernelspec list | grep -q nck && echo "WARN: nck kernel still present" |
 
 To start fresh later, return to **[1 · Setup](01_setup.md)** and run `./scripts/sync-env.sh`
 again.
-
----
-
-**You finished the tutorial chain:**
-
-Setup → Connect → Tides → Validation → NDWI → Elevation → **Cleanup**
