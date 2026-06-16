@@ -110,7 +110,7 @@ The step from 30 to 10 metres is substantial for intertidal work: narrow channel
 
 The limitation is simply that Sentinel-2 did not exist before 2015. For a present-day high-resolution map, this is no constraint at all. For a study that needs a historical baseline — asking what a flat looked like in 1990 — Sentinel-2 is not an option; Landsat is the only choice.
 
-A processing note: Sentinel-2 changed its radiometric processing baseline in early 2022 (Baseline 04.00), introducing a +1000 DN offset in the reflectance values. Scenes from before and after that date must be harmonised before combining them into a composite. The tutorial handles this automatically.
+A processing note: Sentinel-2 changed its radiometric processing baseline in early 2022 (Baseline 04.00), introducing a +1000 DN offset in the reflectance values. Scenes from before and after that date must be harmonised before combining them into a composite.
 
 # About this tutorial
 
