@@ -1,5 +1,8 @@
 ---
 title: Mapping Intertidal Elevation from Open Satellite Data
+short_title: Home
+execute:
+  skip: true
 ---
 
 # Background
@@ -120,7 +123,7 @@ The tutorial follows a deliberate sequence. Each one produces something the next
 | **[Tides](03_tides.ipynb)** | Explore tidal range and satellite sampling at your site |
 | **[Validation](04_validation.ipynb)** | Compare FES2022 against RWS gauge data (optional) |
 | **[NDWI](05_ndwi.ipynb)** | Clear-sky RGB + NDWI at low and high tide — the logic behind height mapping |
-| **[Elevation](06_elevation.ipynb)** | Full intertidal elevation map with `intertidal.elevation()` |
+| **[Elevation](06_elevation.ipynb)** | Full intertidal elevation map |
 
 After the tutorial, or even before, read **[Applications & next steps](07_applications.md)** — what to do with the data,
 time series, ecological monitoring. The idea is that your group will formulate its own research question to study over the next couple of days. 

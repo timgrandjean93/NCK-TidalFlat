@@ -1,5 +1,6 @@
 # Build output
 _build/
+archive/
 
 # Environment
 .venv/
